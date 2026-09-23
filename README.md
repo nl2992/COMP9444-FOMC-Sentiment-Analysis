@@ -30,6 +30,14 @@ Can modern deep learning architectures — specifically pretrained transformer e
 
 Natural-language input rendered traditional rebalancing techniques (e.g. SMOTE/ROSE-style resampling) insufficient; the class imbalance was instead handled through model capacity and tuning rather than data augmentation.
 
+### 3.1 Exploratory Analysis
+
+The dataset comprises 2,480 labelled sentences in an 80/20 train/test split:
+
+| Train/test split | Class distribution (train) | Sentence-length distribution |
+|---|---|---|
+| ![Train/test split](figures/train_test_split.png) | ![Label distribution](figures/label_distribution.png) | ![Sentence length](figures/sentence_length_distribution.png) |
+
 ## 4. Methodology
 
 ### 4.1 Preprocessing
@@ -79,14 +87,28 @@ Test-set performance (same dataset and evaluation code for all models):
 | Meta-Model (stack) | 0.494 | 0.327 | 0.244 |
 | *Reference: Wellington QIG — GPT-4o API* | *0.97* | *0.97* | *0.97* |
 
+![Performance comparison of all models, including the stacked meta-model and the GPT-4o API reference](figures/model_comparison_full.png)
+
 All transformer-based models outperform the LSTM baseline, confirming the efficacy of pretrained self-attention architectures for this sentiment task. The tuned RoBERTa-large (≈355M parameters, dynamic masking, larger pretraining corpus) substantially exceeds the FinBERT reference (~80%, Araci 2019). The stacked meta-model **underperformed every constituent model** — even the LSTM.
+
+The confusion matrix of the best model shows where the residual errors concentrate — chiefly Hawkish sentences confused with Neutral:
+
+![Confusion matrix for the fine-tuned RoBERTa-large model](figures/confusion_matrix_roberta_large.png)
 
 ## 6. Discussion
 
 - **Why RoBERTa-large wins:** greater pretraining data volume, dynamic masking for robust word representations, and substantially larger model capacity, allowing it to capture deeper context dependencies in policy language.
 - **Why the LSTM lags:** lower architectural complexity for this task, sensitivity to tuning, and purely sequential processing that fails to isolate the most decision-relevant tokens.
 - **Why stacking failed:** (1) weak base-model diversity — similar architectures produced correlated errors; (2) insufficient training-set size for the meta-model to learn reliable combination weights.
-- **LIME analysis:** for identical input, RoBERTa-large is markedly more confident and correctly attributes sentiment-bearing words, while the LSTM misclassifies (e.g. predicting *Dovish* where the true label is *Neutral*).
+
+![Stacked meta-model versus its constituents](figures/model_comparison_with_meta.png)
+
+- **LIME analysis:** for identical input, RoBERTa-large is markedly more confident and correctly attributes sentiment-bearing words, while the LSTM misclassifies (e.g. predicting *Dovish* where the true label is *Neutral*):
+
+| RoBERTa-large (correctly predicts Neutral, 0.99 confidence) | LSTM (misclassifies as Dovish) |
+|---|---|
+| ![LIME RoBERTa-large](figures/lime_roberta_large.png) | ![LIME LSTM](figures/lime_lstm.png) |
+
 - **Error structure:** remaining confusion concentrates on *Hawkish*, attributable to the nuanced, hedged phrasing typical of policy statements; *Neutral* success partly reflects its dominant class share and the genuinely measured tone of official publications.
 
 ## 7. Conclusion
@@ -100,6 +122,7 @@ Fine-tuned transformer encoders — RoBERTa-large in particular — are highly e
 | `project_notebook.ipynb` | Full end-to-end pipeline: EDA, preprocessing, all 8 models, tuning, LIME, stacking, confusion matrices |
 | `FOMC_Sentiment_Report.pdf` | Written project report |
 | `FOMC_Sentiment_Presentation_FINAL.pptx` / `.pdf` | Final presentation slides |
+| `figures/` | All visualisations referenced in this README |
 | `LIME Diagrams/` | Interactive LIME explanation outputs (RoBERTa-large, LSTM) |
 | `requirements.txt` | Python dependencies |
 
