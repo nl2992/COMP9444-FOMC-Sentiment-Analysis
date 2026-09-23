@@ -1,7 +1,5 @@
 # Neural Networks & Deep Learning: NLP Classification of FOMC Texts for Market Analysis
 
-**UNSW COMP9444 — Neural Networks & Deep Learning, Group Project**
-
 **Authors:** Ying Bi (z5444398), Wing Pui (Nigel) Li (z5320405), Zhenhua Liu (z5433153), Tong Zhang (z5542524)
 
 ---
@@ -24,7 +22,7 @@ Can modern deep learning architectures — specifically pretrained transformer e
 
 | Property | Detail |
 |---|---|
-| Source | Financial Services Innovation Lab, Georgia Tech (per assessment specification) |
+| Source | Financial Services Innovation Lab, Georgia Tech |
 | Content | FOMC meeting transcripts, press conferences, and speeches by Federal Reserve officials, 1996–2022 |
 | Labels | Semantic policy-stance labels: **Neutral (0), Hawkish (1), Dovish (2)** |
 | Class balance | ≈ 2 : 1 : 1 (Neutral dominant) |
@@ -100,8 +98,8 @@ Fine-tuned transformer encoders — RoBERTa-large in particular — are highly e
 | File | Description |
 |---|---|
 | `project_notebook.ipynb` | Full end-to-end pipeline: EDA, preprocessing, all 8 models, tuning, LIME, stacking, confusion matrices |
-| `COMP9444_Report.pdf` | Written project report |
-| `COMP9444_Presentation_FINAL.pptx` / `.pdf` | Final presentation slides |
+| `FOMC_Sentiment_Report.pdf` | Written project report |
+| `FOMC_Sentiment_Presentation_FINAL.pptx` / `.pdf` | Final presentation slides |
 | `LIME Diagrams/` | Interactive LIME explanation outputs (RoBERTa-large, LSTM) |
 | `requirements.txt` | Python dependencies |
 
@@ -109,7 +107,3 @@ Fine-tuned transformer encoders — RoBERTa-large in particular — are highly e
 
 - Araci, D. (2019). *FinBERT: Financial Sentiment Analysis with Pre-trained Language Models.*
 - Etelis et al. (2023). *Stacked ensemble approaches for financial text classification.*
-
----
-
-*Course: COMP9444 Neural Networks & Deep Learning, UNSW Sydney.*
